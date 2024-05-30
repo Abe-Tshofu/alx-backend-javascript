@@ -1,12 +1,16 @@
-export default function guardrail(mathFunction) {
-  const queue = [];
+// 100-await.js
+import { uploadPhoto, createUser } from "./utils.js";
+
+async function asyncUploadUser() {
   try {
-    const result = mathFunction();
-    queue.push(result);
+    const photoPromise = uploadPhoto();
+    const userPromise = createUser();
+    const [photo, user] = await Promise.all([photoPromise, userPromise]);
+    return { photo, user };
   } catch (error) {
-    queue.push(`Error: ${error.message}`);
-  } finally {
-    queue.push('Guardrail was processed');
+    console.error("Error:", error);
+    return { photo: null, user: null };
   }
-  return queue;
 }
+
+export default asyncUploadUser;
